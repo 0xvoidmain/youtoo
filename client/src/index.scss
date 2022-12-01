@@ -1,0 +1,29 @@
+
+*,
+*:before
+
+,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  font-family: "Rubik";
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1.8px;
+  overflow: overlay;
+}
+
+/**
+Overwrite styles
+*/
+.MuiCollapse-wrapper > .MuiCollapse-wrapperInner >.MuiMenuItem-root {
+  color: black;
+}
+
+.MuiList-root > .MuiListItem-root >.MuiButton-textPrimary {
+  color: white !important;
+}
