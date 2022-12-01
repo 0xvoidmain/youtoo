@@ -13,17 +13,3 @@ export interface IAccount {
     address: string
     name: string
 }
-
-export async function RegisterOrLoginWithAddress(address, name) {
-    return await Mongo<IAccount>('Account').findOneAndUpdate({
-        address: address
-    }, {
-        $setOnInsert: {
-            address,
-            name
-        }
-    }, {
-        upsert: true,
-        new: true
-    })
-}

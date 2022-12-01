@@ -56,13 +56,14 @@ function HTTPTrigger(name: string, execueFunction: HTTPFunction) {
             })
         }
     }
-    var route = name;
+    var route = name.replace(/_/gi, '/');
     (route.match(/\{(.*?)\}/gi) || [])
         .forEach(v => {
             route = route.replace(v, `:${v.substring(1, v.length - 1)}`)
         })
     app.post(`/api/${route}`, wrapFunction)
-    console.log(`POST: api/${route}`)
+    app.get(`/api/${route}`, wrapFunction)
+    console.log(`GET,POST: api/${route}`)
 }
 
 export async function main() {

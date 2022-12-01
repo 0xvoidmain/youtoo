@@ -38,7 +38,7 @@ const SchemaStore = {
 }
 
 export function Mongo<T>(
-        collection: ('Account' | 'Challenge')
+        collection: string
     ): Model<T> {
     if (!SchemaStore[collection]) {
         SchemaStore[collection] = mongoose.model(collection, Schema<T>(), collection)
