@@ -1,0 +1,7 @@
+{
+  "PORT": 3000,
+  "AUTH_JWT_SECRET_KEY": "athjwt7m00lectOrhack3rancutcH0",
+  "NODE_ENV": "development",
+  "API_URL": "https://api-cb.mollector.com",
+  "MONGODB_URI1": "mongodb+srv://admin:dev-4dm1n-m0ll3cto@dev.kkrga.mongodb.net/mollector-closebeta?retryWrites=true&w=majority"
+}

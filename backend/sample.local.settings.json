@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=storagemollectordev;AccountKey=xUM3doT4zoxpb5Ka982pTzS93QBpcYGJTDak6E8RQTkY9/qjLxJ2ZK2B9Pb8lIqipUFiO56cAGW+V6LUD4n4cw==;EndpointSuffix=core.windows.net",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "NODE_ENV": "local",
+    "IS_LOCAL_DEV": true,
+    "API_URL": "http://localhost:7071",
+    "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=storagemollectordev;AccountKey=xUM3doT4zoxpb5Ka982pTzS93QBpcYGJTDak6E8RQTkY9/qjLxJ2ZK2B9Pb8lIqipUFiO56cAGW+V6LUD4n4cw==;EndpointSuffix=core.windows.net",
+    "MONGODB_URI": "mongodb+srv://admin:dev-4dm1n-m0ll3cto@dev.kkrga.mongodb.net/mollector-local?retryWrites=true&w=majority",
+    "REDIS_URI": "redis://45.76.153.252:6379/1",
+    "AzureWebJobs.QueuePlayerCardImageGenerate.Disabled": false,
+    "AzureWebJobs.QueueCreatePlayerPackAndGenerateCardsInPack.Disabled": false,
+    "AzureWebJobs.QueueUpdatePlayerQuest.Disabled": false,
+    "AzureWebJobs.TimerCrawlerOnChain.Disabled": true,
+    "AZURE_FUNCTION_PROXY_DISABLE_LOCAL_CALL": true
+  } 
+}
