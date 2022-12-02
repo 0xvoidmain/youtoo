@@ -25,7 +25,7 @@ const typography = {
   },
   subtitle1: {
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: 400,
     color: '#FFFFFF',
   },
   subtitle2: {
@@ -41,7 +41,7 @@ const typography = {
     fontSize: 14,
   },
   caption: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#FFFFFF',
   },
 }

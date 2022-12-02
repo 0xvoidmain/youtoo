@@ -1,4 +1,4 @@
-import { COLORS } from 'theme/common'
+import { COLORS } from '~/theme/common'
 
 const COLOR_PALETTE = {
   primary: {

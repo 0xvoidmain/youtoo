@@ -1,5 +1,4 @@
 import React from 'react'
-import config from 'configurations'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 
@@ -7,6 +6,8 @@ import { ThemeProvider } from '@mui/material/styles'
 import { WalletDialogProvider } from '@solana/wallet-adapter-material-ui'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { Coin98WalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
+
+import config from '~/configurations'
 
 import theme from './theme/theme'
 import App from './App'

@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react'
-import CloudImageSrc from 'assets/images/clouds.png'
-import AvatarSrc from 'assets/images/leviacker.jpg'
 
 import { Avatar, Box, Button, Grid, List, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import { WalletMultiButton } from '@solana/wallet-adapter-material-ui'
+
+import CloudImageSrc from '~/assets/images/clouds.png'
+import AvatarSrc from '~/assets/images/leviacker.jpg'
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.common.white,
