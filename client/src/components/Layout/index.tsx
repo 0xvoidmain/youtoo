@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { Avatar, Box, Button, Grid, List, Typography } from '@mui/material'
 import { styled } from '@mui/system'
@@ -6,6 +7,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-material-ui'
 
 import CloudImageSrc from '~/assets/images/clouds.png'
 import AvatarSrc from '~/assets/images/leviacker.jpg'
+import { HOME_ROUTE } from '~/pages/Home'
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -34,12 +36,24 @@ const CloudImage = styled('img')({
 })
 
 const Layout = ({ children }: ILayout) => {
+  const navigate = useNavigate()
+
   return (
     <Wrapper>
       <Box>
         <Grid container padding={5}>
           <Grid item xs={12} justifyContent="space-between" display="flex">
-            <Typography variant="h1" padding="6px 8px" color={(theme) => theme.palette.common.white}>
+            <Typography
+              variant="h1"
+              onClick={() => navigate(HOME_ROUTE)}
+              padding="6px 8px"
+              color={(theme) => theme.palette.common.white}
+              sx={{
+                '&:hover': {
+                  cursor: 'pointer',
+                },
+              }}
+            >
               Reward Network
             </Typography>
             <Box display="flex">
@@ -66,7 +80,7 @@ const Layout = ({ children }: ILayout) => {
         </Grid>
         <Box
           component="main"
-          maxWidth="1100px"
+          maxWidth="900px"
           width="100%"
           margin="0 auto"
           sx={{

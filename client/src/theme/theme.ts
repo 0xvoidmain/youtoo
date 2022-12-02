@@ -7,6 +7,7 @@ import typography from './typography'
 import '@mui/styles'
 
 const theme: Theme = createTheme({
+  components: {},
   typography,
   palette,
 })
