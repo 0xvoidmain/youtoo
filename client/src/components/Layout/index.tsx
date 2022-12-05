@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Avatar, Box, Button, Grid, List, Typography } from '@mui/material'
+import { Avatar, Box, Button, Grid, List, Stack, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import { WalletMultiButton } from '@solana/wallet-adapter-material-ui'
 
@@ -20,12 +20,9 @@ interface ILayout {
   children: ReactNode
 }
 
-const Wrapper = styled(Box)(({ theme }) => ({
+const Wrapper = styled(Stack)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.main,
   minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
 }))
 
 const CloudImage = styled('img')({
@@ -39,7 +36,7 @@ const Layout = ({ children }: ILayout) => {
   const navigate = useNavigate()
 
   return (
-    <Wrapper>
+    <Wrapper direction="column" justifyContent="space-between">
       <Box>
         <Grid container padding={5}>
           <Grid item xs={12} justifyContent="space-between" display="flex">

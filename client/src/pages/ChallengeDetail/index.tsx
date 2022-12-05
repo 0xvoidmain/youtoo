@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import find from 'lodash/find'
 
@@ -21,18 +22,17 @@ import { TransitionProps } from '@mui/material/transitions'
 import AvatarSrc from '~/assets/images/leviacker.jpg'
 import Button from '~/components/Button'
 import TextField from '~/components/TextField'
+import { selectChallenges } from '~/state/reducers/app'
+import { IChallange } from '~/state/reducers/types'
 
 import { HOME_ROUTE } from '../Home'
-import { dummyChallanges } from '../Home/AvailableChallenges'
-import { IChallange } from '../Home/types'
 
 export const CHALLENGE_DETAIL_ROUTE = '/challenge'
-
-const dummyComments = []
 
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
   const navigate = useNavigate()
+  const dummyChallanges = useSelector(selectChallenges)
   const [notiState, setNotiState] = useState<{
     open: boolean
     Transition: React.ComponentType<

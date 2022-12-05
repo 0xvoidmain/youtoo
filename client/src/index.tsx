@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 
 import { ThemeProvider } from '@mui/material/styles'
@@ -8,6 +9,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { Coin98WalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 
 import config from '~/configurations'
+import { store } from '~/state'
 
 import theme from './theme/theme'
 import App from './App'
@@ -19,15 +21,17 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <HashRouter>
-        <ConnectionProvider endpoint={config.rpcEndpoint}>
-          <WalletProvider wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]} autoConnect>
-            <WalletDialogProvider>
-              <App />
-            </WalletDialogProvider>
-          </WalletProvider>
-        </ConnectionProvider>
-      </HashRouter>
+      <Provider store={store}>
+        <HashRouter>
+          <ConnectionProvider endpoint={config.rpcEndpoint}>
+            <WalletProvider wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]} autoConnect>
+              <WalletDialogProvider>
+                <App />
+              </WalletDialogProvider>
+            </WalletProvider>
+          </ConnectionProvider>
+        </HashRouter>
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
 )

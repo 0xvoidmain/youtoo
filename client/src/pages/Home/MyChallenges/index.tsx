@@ -1,43 +1,22 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { Card, CardActions, CardContent, Typography } from '@mui/material'
 
 import Button from '~/components/Button'
+import { CHALLENGE_DETAIL_ROUTE } from '~/pages/ChallengeDetail'
+import { selectChallenges } from '~/state/reducers/app'
 
-import { IChallange } from '../types'
-
-export const dummyChallanges: IChallange[] = [
-  {
-    id: 1,
-    title: 'Chống đẩy 30 lần',
-    challangeDescription:
-      'Chống đẩy mỗi ngày để ngực đẹp hơn nào baby. Chống đẩy 30 ngày liên tục, ngực đẹp hơn nhiều lắm các bạn ơi',
-    prize: 5000,
-    minCommittedAmount: 20,
-    numberOfCommittedPeople: 300,
-    time: 'từ 1/1/2022 đến 1/2/2022',
-  },
-  {
-    id: 2,
-    title: 'Đi bộ 5000 bước',
-    challangeDescription: 'Mua 5 SOL mỗi ngày để trở thành tỷ phú sau 2 năm nữa các bạn ơi',
-    prize: 5000,
-    minCommittedAmount: 20,
-    numberOfCommittedPeople: 3000,
-    time: 'từ 1/1/2022 đến 1/2/2022',
-  },
-  {
-    id: 3,
-    title: 'Đoc tiểu thuyết sự im lặng của bầy cừu',
-    challangeDescription: 'Mua 5 SOL mỗi ngày để trở thành tỷ phú sau 2 năm nữa các bạn ơi',
-    prize: 5000,
-    minCommittedAmount: 20,
-    numberOfCommittedPeople: 3000,
-    time: 'từ 1/1/2022 đến 1/2/2022',
-  },
-]
+import Progress from '../components/Progress'
 
 const MyChallenges = () => {
+  const navigate = useNavigate()
+  const dummyChallanges = useSelector(selectChallenges)
+  const onHandleNavigateToDetail = useCallback((id: number) => {
+    navigate(`${CHALLENGE_DETAIL_ROUTE}/${id}`)
+  }, [])
+
   return (
     <>
       <>
@@ -61,12 +40,23 @@ const MyChallenges = () => {
                   <Typography variant="subtitle1">Thời gian: {time}</Typography>
                   <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography>
                   <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${minCommittedAmount}</Typography>
-                  <Typography variant="subtitle1" fontWeight={800}>
+                  <Typography variant="subtitle1" fontWeight={600}>
                     {numberOfCommittedPeople} người đăng ký tham gia
                   </Typography>
+
+                  <Typography variant="h6" fontWeight={800} mt={(theme) => theme.spacing(1)}>
+                    Progress:
+                  </Typography>
+                  <Progress
+                    variant="determinate"
+                    value={30}
+                    sx={{
+                      marginTop: (theme) => theme.spacing(1),
+                    }}
+                  />
                 </CardContent>
                 <CardActions>
-                  <Button onClick={() => {}} variant="contained">
+                  <Button onClick={() => onHandleNavigateToDetail(id)} variant="contained">
                     Details
                   </Button>
                 </CardActions>

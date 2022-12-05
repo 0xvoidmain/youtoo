@@ -5,7 +5,6 @@ import { Box, Stack, Tab } from '@mui/material'
 import { styled } from '@mui/system'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 
-// @ts-ignore
 import Button from '~/components/Button'
 
 import AvailalbeChallenges from './AvailableChallenges'
