@@ -10,6 +10,7 @@ import cronparser from 'cron-parser'
 import { CronJob } from "cron"
 import { bootstrap } from './bootstrap'
 import { HTTPFunction } from './HTTPFunction'
+import { Auth } from './_core/Middleware/Auth'
 
 
 var v = JSON.parse(fs.readFileSync(path.join(__dirname, './local.settings.json'), 'utf8'))
@@ -32,7 +33,7 @@ app.use("/static", express.static('_static', {
 
 function HTTPTrigger(name: string, execueFunction: HTTPFunction) {
     var wrapFunction = async (req, res) => {
-        // console.log(`${new Date().toISOString()}: ${req.method}: ${req.url}`)
+        console.log(`${new Date().toISOString()}: ${req.method}: ${req.url}`)
 
         try {
             req.body = req.body || {}
@@ -84,7 +85,7 @@ export async function main() {
             if (!process.env[`${fol}.Disabled`]) {
                 console.log(fol)
 
-                HTTPTrigger(fol, funcExe)
+                HTTPTrigger(fol, Auth(funcExe))
             }
         }
     }
