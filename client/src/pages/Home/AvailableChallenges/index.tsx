@@ -1,20 +1,54 @@
 import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Card, CardActions, CardContent, Typography } from '@mui/material'
+import { Box, Card, CardActions, CardContent, Typography } from '@mui/material'
+import { styled } from '@mui/system'
 
 import Button from '~/components/Button'
 import { CHALLENGE_DETAIL_ROUTE } from '~/pages/ChallengeDetail'
 
-export interface IChallange {
-  title: string
-  time: string
-  prize: number
-  challangeDescription: string
-  minCommittedAmount: number
-  numberOfCommittedPeople: number
-  id: number
-}
+import { IChallange } from '../types'
+
+const RibbonWrapper = styled(Box)(({ theme }) => ({
+  width: '130px',
+  height: '130px',
+  top: '-10px',
+  right: '-10px',
+  overflow: 'hidden',
+  position: 'absolute',
+  '&:before, &:after': {
+    position: 'absolute',
+    zIndex: 1,
+    content: '""',
+    display: 'block',
+    border: '5px solid #4caf50d9',
+  },
+  '&:before': {
+    top: 0,
+    left: '10px',
+  },
+  '&:after': {
+    bottom: '11px',
+    right: 0,
+  },
+  '& > span': {
+    position: 'absolute',
+    display: 'block',
+    minWidth: '220px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textAlign: 'center',
+    padding: '15px 0',
+    backgroundColor: '#4caf50',
+    boxShadow: '0 5px 10px rgba(0,0,0,.1)',
+    color: '#fff',
+    textShadow: '0 1px 1px rgba(0,0,0,.2)',
+    left: '-24px',
+    top: '23px',
+    zIndex: 2,
+    transform: 'rotate(45deg)',
+  },
+}))
 
 export const dummyChallanges: IChallange[] = [
   {
@@ -53,10 +87,15 @@ const AvailalbeChallenges = () => {
             <Card
               sx={{
                 backgroundColor: 'secondary.dark',
+                position: 'relative',
+                overflow: 'visible',
                 padding: (theme) => theme.spacing(1),
                 margin: (theme) => theme.spacing(0, 0, 4, 0),
               }}
             >
+              <RibbonWrapper>
+                <span>Joined</span>
+              </RibbonWrapper>
               <CardContent>
                 <Typography gutterBottom variant="h2">
                   {title}

@@ -1,19 +1,38 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import find from 'lodash/find'
 
-import { Alert, Avatar, Card, CardContent, Divider, Fade, Grid, Paper, Snackbar, Typography } from '@mui/material'
+import {
+  Alert,
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Divider,
+  Fade,
+  Grid,
+  Paper,
+  Snackbar,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { TransitionProps } from '@mui/material/transitions'
 
 import AvatarSrc from '~/assets/images/leviacker.jpg'
 import Button from '~/components/Button'
+import TextField from '~/components/TextField'
 
-import { dummyChallanges, IChallange } from '../Home/AvailableChallenges'
+import { HOME_ROUTE } from '../Home'
+import { dummyChallanges } from '../Home/AvailableChallenges'
+import { IChallange } from '../Home/types'
 
 export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 
+const dummyComments = []
+
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
+  const navigate = useNavigate()
   const [notiState, setNotiState] = useState<{
     open: boolean
     Transition: React.ComponentType<
@@ -25,6 +44,7 @@ const ChallangeDetail = () => {
     open: false,
     Transition: Fade,
   })
+  const [commentTxt, setCommentTxt] = useState<string>('')
   const { title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople } = useMemo<
     IChallange | Record<string, any>
   >(() => {
@@ -36,7 +56,13 @@ const ChallangeDetail = () => {
       open: true,
       Transition: Fade,
     })
+
+    setTimeout(() => {
+      navigate(HOME_ROUTE)
+    }, 1000)
   }, [])
+
+  const addComment = (comment: string) => {}
 
   const handleClose = () => {
     setNotiState({
@@ -89,11 +115,48 @@ const ChallangeDetail = () => {
         <Typography
           variant="h3"
           sx={{
-            margin: (theme) => theme.spacing(4, 0, 0, 0),
+            margin: (theme) => theme.spacing(4, 0, 2, 0),
           }}
         >
           Comments
         </Typography>
+        <Paper
+          sx={{
+            backgroundColor: '#4a4953',
+          }}
+        >
+          <Box sx={{ p: '15px' }}>
+            <Stack direction="row" spacing={2} alignItems="flex-start">
+              <Avatar src={AvatarSrc} variant="rounded" alt="user-avatar" />
+              <TextField
+                multiline
+                fullWidth
+                minRows={4}
+                placeholder="Add a comment"
+                value={commentTxt}
+                onChange={(e) => {
+                  setCommentTxt(e.target.value)
+                }}
+              />
+              <Button
+                size="large"
+                variant="contained"
+                sx={{
+                  p: '8px 25px',
+                  '&:hover': {
+                    bgcolor: 'custom.lightGrayishBlue',
+                  },
+                }}
+                onClick={(e) => {
+                  !commentTxt.trim() ? e.preventDefault() : addComment(commentTxt.trim())
+                  setCommentTxt('')
+                }}
+              >
+                Send
+              </Button>
+            </Stack>
+          </Box>
+        </Paper>
         <Paper
           sx={{
             backgroundColor: '#4a4953',
