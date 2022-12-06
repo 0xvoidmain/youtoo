@@ -9,3 +9,8 @@ export interface IChallange {
   id: number
   type: ChallengeStatus
 }
+
+export interface IBinanceInfo {
+  apiKey: string
+  apiSecret: string
+}

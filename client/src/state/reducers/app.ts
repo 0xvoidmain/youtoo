@@ -1,11 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { find } from 'lodash'
+
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '..'
 
-import { IChallange } from './types'
+import { ChallengeStatus, IBinanceInfo, IChallange } from './types'
 
 export interface InitialAppReducerState {
   challenges: IChallange[]
+  binanceInfo: IBinanceInfo
 }
 
 const initialState: InitialAppReducerState = {
@@ -52,15 +55,55 @@ const initialState: InitialAppReducerState = {
       type: 'Soon',
     },
   ],
+  binanceInfo: {
+    apiKey: '',
+    apiSecret: '',
+  },
 }
 
 export const appSlice = createSlice({
   name: 'App',
   initialState,
-  reducers: {},
+  reducers: {
+    setType: (
+      state,
+      action: PayloadAction<{
+        id: number
+        type: ChallengeStatus
+      }>,
+    ) => {
+      state.challenges = state.challenges.map((c) => {
+        if (c.id === action.payload.id) {
+          return {
+            ...c,
+            type: action.payload.type,
+          }
+        }
+
+        return c
+      })
+    },
+    setBinanceKey: (
+      state,
+      action: PayloadAction<{
+        apiKey: string
+        apiSecret: string
+      }>,
+    ) => {
+      const { apiKey, apiSecret } = action.payload
+      state.binanceInfo = {
+        apiKey,
+        apiSecret,
+      }
+    },
+  },
 })
+
+// Actions
+export const { setType, setBinanceKey } = appSlice.actions
 
 export const selectAppState = (state: RootState) => state.app
 export const selectChallenges = (state: RootState) => selectAppState(state).challenges
+export const selectBinanceInfo = (state: RootState) => selectAppState(state).binanceInfo
 
 export default appSlice.reducer

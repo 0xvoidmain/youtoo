@@ -1,9 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import find from 'lodash/find'
 
+import { ExpandMore } from '@mui/icons-material'
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Avatar,
   Box,
@@ -21,8 +25,10 @@ import { TransitionProps } from '@mui/material/transitions'
 
 import AvatarSrc from '~/assets/images/leviacker.jpg'
 import Button from '~/components/Button'
+import Container from '~/components/Layout/Container'
 import TextField from '~/components/TextField'
-import { selectChallenges } from '~/state/reducers/app'
+import { useAppDispatch } from '~/state'
+import { selectChallenges, setType } from '~/state/reducers/app'
 import { IChallange } from '~/state/reducers/types'
 
 import { HOME_ROUTE } from '../Home'
@@ -32,7 +38,9 @@ export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const dummyChallanges = useSelector(selectChallenges)
+  const [isLoading, setIsLoading] = useState(true)
   const [notiState, setNotiState] = useState<{
     open: boolean
     Transition: React.ComponentType<
@@ -45,18 +53,33 @@ const ChallangeDetail = () => {
     Transition: Fade,
   })
   const [commentTxt, setCommentTxt] = useState<string>('')
-  const { title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople } = useMemo<
+  const { title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople, id, type } = useMemo<
     IChallange | Record<string, any>
   >(() => {
     return find(dummyChallanges, (c) => c.id === Number(challengeId)) || {}
   }, [challengeId])
 
-  const onHandleJoinChallange = useCallback(() => {
+  const isJoinedChallenge = useMemo(() => {
+    return type === 'Joined'
+  }, [type])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+  }, [])
+
+  const onHandleJoinChallange = useCallback((id: number) => {
     setNotiState({
       open: true,
       Transition: Fade,
     })
-
+    dispatch(
+      setType({
+        id,
+        type: 'Joined',
+      }),
+    )
     setTimeout(() => {
       navigate(HOME_ROUTE)
     }, 1000)
@@ -72,7 +95,7 @@ const ChallangeDetail = () => {
   }
 
   return (
-    <>
+    <Container isLoading={isLoading}>
       <Card
         sx={{
           backgroundColor: 'secondary.dark',
@@ -96,14 +119,56 @@ const ChallangeDetail = () => {
         </CardContent>
       </Card>
       <Button
-        onClick={onHandleJoinChallange}
+        onClick={() => onHandleJoinChallange(id)}
+        disabled={isJoinedChallenge}
         variant="contained"
         sx={{
           margin: (theme) => theme.spacing(0, 0, 4, 0),
         }}
       >
-        Join challange
+        {isJoinedChallenge ? 'Already Joined' : 'Join challange'}
       </Button>
+      <Divider
+        variant="middle"
+        light
+        sx={{
+          borderColor: '#53545e',
+        }}
+      />
+      <Typography
+        variant="h3"
+        sx={{
+          margin: (theme) => theme.spacing(4, 0, 2, 0),
+        }}
+      >
+        Today challenge
+      </Typography>
+      <Divider
+        variant="middle"
+        light
+        sx={{
+          borderColor: '#53545e',
+        }}
+      />
+      <Accordion
+        sx={{
+          margin: (theme) => theme.spacing(4, 0, 4, 0),
+          '&': {
+            backgroundColor: '#4a4953',
+            borderRadius: '4px',
+          },
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography variant="h3">Challenge history</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
+            leo lobortis eget.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
       <Divider
         variant="middle"
         light
@@ -244,7 +309,7 @@ const ChallangeDetail = () => {
           </Alert>
         </Snackbar>
       </>
-    </>
+    </Container>
   )
 }
 

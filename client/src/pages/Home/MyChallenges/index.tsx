@@ -20,8 +20,9 @@ const MyChallenges = () => {
   return (
     <>
       <>
-        {dummyChallanges.map(
-          ({ title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople, id }) => {
+        {dummyChallanges
+          .filter((c) => c.type === 'Joined')
+          .map(({ title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople, id }) => {
             return (
               <Card
                 sx={{
@@ -62,8 +63,7 @@ const MyChallenges = () => {
                 </CardActions>
               </Card>
             )
-          },
-        )}
+          })}
       </>
     </>
   )
