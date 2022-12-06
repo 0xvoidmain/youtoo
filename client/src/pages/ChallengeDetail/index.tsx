@@ -32,6 +32,7 @@ import { selectChallenges, setType } from '~/state/reducers/app'
 import { IChallange } from '~/state/reducers/types'
 
 import { HOME_ROUTE } from '../Home'
+import Progress from '../Home/components/Progress'
 
 export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 
@@ -116,16 +117,19 @@ const ChallangeDetail = () => {
           <Typography variant="subtitle1" fontWeight={800}>
             {numberOfCommittedPeople} người đăng ký tham gia
           </Typography>
+          <Typography variant="h6" fontWeight={800} mt={(theme) => theme.spacing(1)}>
+            Progress:
+          </Typography>
+          <Progress
+            variant="determinate"
+            value={30}
+            sx={{
+              marginTop: (theme) => theme.spacing(1),
+            }}
+          />
         </CardContent>
       </Card>
-      <Button
-        onClick={() => onHandleJoinChallange(id)}
-        disabled={isJoinedChallenge}
-        variant="contained"
-        sx={{
-          margin: (theme) => theme.spacing(0, 0, 4, 0),
-        }}
-      >
+      <Button onClick={() => onHandleJoinChallange(id)} disabled={isJoinedChallenge} variant="contained">
         {isJoinedChallenge ? 'Already Joined' : 'Join challange'}
       </Button>
       <Divider
@@ -133,35 +137,47 @@ const ChallangeDetail = () => {
         light
         sx={{
           borderColor: '#53545e',
+          margin: (theme) => theme.spacing(4, 0, 4, 0),
         }}
       />
-      <Typography
-        variant="h3"
-        sx={{
-          margin: (theme) => theme.spacing(4, 0, 2, 0),
-        }}
-      >
+      <Typography variant="h3" mb={1}>
         Today challenge
       </Typography>
+      <Alert
+        variant="outlined"
+        severity="info"
+        sx={{
+          mb: (theme) => theme.spacing(4),
+          '& > .MuiAlert-message': {
+            color: 'white',
+          },
+        }}
+      >
+        <Typography variant="body1" mb={1.5}>
+          Bạn cần chống đẩy 30 lần trong ngày hôm nay
+        </Typography>
+        <Button variant="contained">Start</Button>
+      </Alert>
       <Divider
         variant="middle"
         light
         sx={{
           borderColor: '#53545e',
+          margin: (theme) => theme.spacing(4, 0, 4, 0),
         }}
       />
+      <Typography variant="h3" mb={1}>
+        Challenge history
+      </Typography>
       <Accordion
         sx={{
-          margin: (theme) => theme.spacing(4, 0, 4, 0),
           '&': {
             backgroundColor: '#4a4953',
             borderRadius: '4px',
           },
         }}
       >
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="h3">Challenge history</Typography>
-        </AccordionSummary>
+        <AccordionSummary expandIcon={<ExpandMore />}></AccordionSummary>
         <AccordionDetails>
           <Typography>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
@@ -174,15 +190,11 @@ const ChallangeDetail = () => {
         light
         sx={{
           borderColor: '#53545e',
+          margin: (theme) => theme.spacing(4, 0, 4, 0),
         }}
       />
       <>
-        <Typography
-          variant="h3"
-          sx={{
-            margin: (theme) => theme.spacing(4, 0, 2, 0),
-          }}
-        >
+        <Typography variant="h3" mb={1}>
           Comments
         </Typography>
         <Paper

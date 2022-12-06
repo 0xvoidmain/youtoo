@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Box, Stack, Tab } from '@mui/material'
@@ -6,6 +7,8 @@ import { styled } from '@mui/system'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 
 import Button from '~/components/Button'
+
+import { CREATE_CHALLENGE_ROUTE } from '../CreateChallenge'
 
 import AvailalbeChallenges from './AvailableChallenges'
 import MyChallenges from './MyChallenges'
@@ -19,6 +22,7 @@ const StyledTab = styled(Tab)(({ theme }) => ({
 export const HOME_ROUTE = '/'
 
 const Home = () => {
+  const navigate = useNavigate()
   const { connection } = useConnection()
   const { publicKey, sendTransaction } = useWallet()
   const [value, setValue] = React.useState('1')
@@ -35,6 +39,7 @@ const Home = () => {
             <StyledTab label="My Challenges" value="2" />
           </TabList>
           <Button
+            onClick={() => navigate(CREATE_CHALLENGE_ROUTE)}
             variant="contained"
             sx={{
               lineHeight: 'normal',
