@@ -22,12 +22,14 @@ export function Auth(func: HTTPFunction) {
     
             req._auth = () => ({
                 userId: jwtData.userId,
+                name: jwtData.name || jwtData.userId,
                 role: jwtData.role
             })
         }
         catch (ex) {
             req._auth = () => ({
                 userId: 'anonymous',
+                name: 'Anonymous',
                 role: 1
             })
         }

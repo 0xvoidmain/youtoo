@@ -18,7 +18,7 @@ export default async (req: HTTPRequest<{ address: string, name: string}>) => {
         new: true
     })
 
-    var AccessToken = issueToken(account._id, 1)
+    var AccessToken = issueToken(account._id, name, 1)
 
     return {
         AccessToken,
