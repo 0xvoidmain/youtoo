@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 
 import { ThemeProvider } from '@mui/material/styles'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { WalletDialogProvider } from '@solana/wallet-adapter-material-ui'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { Coin98WalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
@@ -20,19 +22,21 @@ import './index.scss'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <HashRouter>
-          <ConnectionProvider endpoint={config.rpcEndpoint}>
-            <WalletProvider wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]} autoConnect>
-              <WalletDialogProvider>
-                <App />
-              </WalletDialogProvider>
-            </WalletProvider>
-          </ConnectionProvider>
-        </HashRouter>
-      </Provider>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <HashRouter>
+            <ConnectionProvider endpoint={config.rpcEndpoint}>
+              <WalletProvider wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]} autoConnect>
+                <WalletDialogProvider>
+                  <App />
+                </WalletDialogProvider>
+              </WalletProvider>
+            </ConnectionProvider>
+          </HashRouter>
+        </Provider>
+      </ThemeProvider>
+    </LocalizationProvider>
   </React.StrictMode>,
 )
 
