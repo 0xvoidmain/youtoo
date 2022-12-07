@@ -1,14 +1,20 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 import { Avatar, Box, Button, Grid, IconButton, List, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material'
 import { styled } from '@mui/system'
 import { WalletMultiButton } from '@solana/wallet-adapter-material-ui'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 import CloudImageSrc from '~/assets/images/clouds.png'
 import AvatarSrc from '~/assets/images/leviacker.jpg'
+import configs from '~/configurations'
 import { HOME_ROUTE } from '~/pages/Home'
 import { SETTING_ROUTE } from '~/pages/Setting'
+import { useAppDispatch } from '~/state'
+import { selectAuthInfo, setAuthInfo } from '~/state/reducers/app'
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -43,11 +49,12 @@ const settings = [
 const Layout = ({ children }: ILayout) => {
   const navigate = useNavigate()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
-
+  const dispatch = useAppDispatch()
+  const { AccessToken } = useSelector(selectAuthInfo)
+  const { connected, publicKey } = useWallet()
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
@@ -57,6 +64,24 @@ const Layout = ({ children }: ILayout) => {
     navigate(routeName)
   }
 
+  const address = useMemo(() => {
+    if (publicKey) return publicKey?.toBase58()
+
+    return null
+  }, [])
+
+  const onHandleLogin = async () => {
+    const { data: { AccessToken, AccessTokenExpireTime } = {} } = await axios.post(`${configs.apiUrl}/Auth`, {
+      address,
+      name: address,
+    })
+    dispatch(
+      setAuthInfo({
+        AccessToken,
+        AccessTokenExpireTime,
+      }),
+    )
+  }
   return (
     <Wrapper direction="column" justifyContent="space-between">
       <Stack flex={1} flexDirection="column">
@@ -127,6 +152,17 @@ const Layout = ({ children }: ILayout) => {
               </Box>
 
               <WalletMultiButton />
+              {!AccessToken && (
+                <Button
+                  onClick={onHandleLogin}
+                  variant="contained"
+                  sx={{
+                    marginLeft: (theme) => theme.spacing(2),
+                  }}
+                >
+                  Log in
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

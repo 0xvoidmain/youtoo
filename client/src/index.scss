@@ -16,6 +16,18 @@ body,
   letter-spacing: 1.8px;
   overflow: overlay;
 }
+// Hide input number
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 /**
 Overwrite styles
@@ -34,4 +46,8 @@ Overwrite styles
 
 .PrivatePickersYear-yearButton {
   color :#000000de !important;
+}
+
+.MuiSvgIcon-root {
+  color: white;
 }

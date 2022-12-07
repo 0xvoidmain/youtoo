@@ -14,3 +14,8 @@ export interface IBinanceInfo {
   apiKey: string
   apiSecret: string
 }
+
+export interface IAuth {
+  AccessToken: string
+  AccessTokenExpireTime: number
+}

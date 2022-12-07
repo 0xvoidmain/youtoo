@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -16,6 +16,8 @@ const AvailalbeChallenges = () => {
   const onHandleNavigateToDetail = useCallback((id: number) => {
     navigate(`${CHALLENGE_DETAIL_ROUTE}/${id}`)
   }, [])
+
+  useEffect(() => {}, [])
 
   return (
     <>

@@ -4,11 +4,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '..'
 
-import { ChallengeStatus, IBinanceInfo, IChallange } from './types'
+import { ChallengeStatus, IAuth, IBinanceInfo, IChallange } from './types'
 
 export interface InitialAppReducerState {
   challenges: IChallange[]
   binanceInfo: IBinanceInfo
+  auth: IAuth
 }
 
 const initialState: InitialAppReducerState = {
@@ -59,6 +60,10 @@ const initialState: InitialAppReducerState = {
     apiKey: '',
     apiSecret: '',
   },
+  auth: {
+    AccessToken: '',
+    AccessTokenExpireTime: 0,
+  },
 }
 
 export const appSlice = createSlice({
@@ -96,14 +101,22 @@ export const appSlice = createSlice({
         apiSecret,
       }
     },
+    setAuthInfo: (state, action: PayloadAction<IAuth>) => {
+      const { AccessToken, AccessTokenExpireTime } = action.payload
+      state.auth = {
+        AccessToken,
+        AccessTokenExpireTime,
+      }
+    },
   },
 })
 
 // Actions
-export const { setType, setBinanceKey } = appSlice.actions
+export const { setType, setBinanceKey, setAuthInfo } = appSlice.actions
 
 export const selectAppState = (state: RootState) => state.app
 export const selectChallenges = (state: RootState) => selectAppState(state).challenges
 export const selectBinanceInfo = (state: RootState) => selectAppState(state).binanceInfo
+export const selectAuthInfo = (state: RootState) => selectAppState(state).auth
 
 export default appSlice.reducer

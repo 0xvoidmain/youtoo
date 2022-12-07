@@ -29,7 +29,11 @@ const CreateChallenge = () => {
 
   const { errors } = formState
   const onSubmit = (data: any) => console.log(data)
-  console.log(errors, 'errors ?')
+
+  const allowOnlyNumber = (value: string) => {
+    return value.replace(/[^0-9]/g, '')
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h3" mb={3}>
@@ -59,24 +63,26 @@ const CreateChallenge = () => {
             <Controller
               name="tokenAmount"
               control={control}
-              render={({ field }) => (
+              render={({ field: { onChange, value, ...restProps } }) => (
                 <TextField
-                  {...field}
+                  {...restProps}
+                  value={value}
                   variant="outlined"
+                  onChange={(e) => onChange(allowOnlyNumber(e.target.value))}
                   label="Amount"
-                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 />
               )}
             />
             <Controller
               name="minDepositAmount"
               control={control}
-              render={({ field }) => (
+              render={({ field: { onChange, value, ...restProps } }) => (
                 <TextField
-                  {...field}
+                  {...restProps}
+                  value={value}
+                  onChange={(e) => onChange(allowOnlyNumber(e.target.value))}
                   variant="outlined"
                   label="Deposit Amount"
-                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 />
               )}
             />
