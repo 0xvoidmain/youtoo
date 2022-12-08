@@ -1,7 +1,6 @@
 import React, { ReactNode, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 import { Avatar, Box, Button, Grid, IconButton, List, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material'
 import { styled } from '@mui/system'
@@ -15,6 +14,9 @@ import { HOME_ROUTE } from '~/pages/Home'
 import { SETTING_ROUTE } from '~/pages/Setting'
 import { useAppDispatch } from '~/state'
 import { selectAuthInfo, setAuthInfo } from '~/state/reducers/app'
+import { IAuth } from '~/state/reducers/types'
+import Http from '~/utils/httpUtils'
+import { AUTH_TOKEN, setToLocalStorage } from '~/utils/localStorage'
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -74,16 +76,14 @@ const Layout = ({ children }: ILayout) => {
   const onHandleLogin = async () => {
     try {
       setIsLoadingLogin(true)
-      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await axios.post(`${configs.apiUrl}/Auth`, {
+      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await Http.post(`${configs.apiUrl}/Auth`, {
         address,
         name: address,
       })
-      dispatch(
-        setAuthInfo({
-          AccessToken,
-          AccessTokenExpireTime,
-        }),
-      )
+      setToLocalStorage<IAuth>(AUTH_TOKEN, {
+        AccessToken,
+        AccessTokenExpireTime,
+      })
       setIsLoadingLogin(false)
     } catch (error) {
       setIsLoadingLogin(false)

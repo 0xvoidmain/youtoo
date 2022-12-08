@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 
 import { Card, CardActions, CardContent, Typography } from '@mui/material'
 
@@ -9,6 +8,7 @@ import Container from '~/components/Layout/Container'
 import configs from '~/configurations'
 import { CHALLENGE_DETAIL_ROUTE } from '~/pages/ChallengeDetail'
 import { selectChallenges } from '~/state/reducers/app'
+import Http from '~/utils/httpUtils'
 
 import Ribbon from '../components/Ribbon'
 import { IChallange } from '../types'
@@ -25,7 +25,7 @@ const AvailalbeChallenges = () => {
     const fetchChallengeList = async () => {
       try {
         setIsLoading(true)
-        const { data } = await axios.get(`${configs.apiUrl}/Challenges`)
+        const { data } = await Http.get(`${configs.apiUrl}/Challenges`)
         setChallenges(data)
         setIsLoading(false)
       } catch (error) {

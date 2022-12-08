@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios'
 import find from 'lodash/find'
 
 import { ExpandMore } from '@mui/icons-material'
@@ -31,6 +30,7 @@ import TextField from '~/components/TextField'
 import configs from '~/configurations'
 import { useAppDispatch } from '~/state'
 import { selectChallenges, setType } from '~/state/reducers/app'
+import Http from '~/utils/httpUtils'
 
 // import { HOME_ROUTE } from '../Home'
 import Progress from '../Home/components/Progress'
@@ -40,8 +40,6 @@ export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
-  // const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(true)
   const [notiState, setNotiState] = useState<{
     open: boolean
@@ -65,7 +63,7 @@ const ChallangeDetail = () => {
     const fetchChallengeDetail = async () => {
       try {
         setIsLoading(true)
-        const { data } = await axios.post(`${configs.apiUrl}/Challenge`, {
+        const { data } = await Http.post(`${configs.apiUrl}/Challenge`, {
           challengeId,
         })
         setChallengeDetail(data)
@@ -78,12 +76,19 @@ const ChallangeDetail = () => {
     fetchChallengeDetail()
   }, [])
 
-  const onHandleJoinChallange = useCallback((id: string) => {
-    setNotiState({
-      open: true,
-      Transition: Fade,
-    })
-  }, [])
+  const onHandleJoinChallange = async (id: string) => {
+    try {
+      await Http.post(`${configs.apiUrl}/JoinChallenge`, {
+        challengeId: id,
+      })
+      setNotiState({
+        open: true,
+        Transition: Fade,
+      })
+    } catch (error) {
+      console.log(error, 'error')
+    }
+  }
 
   const addComment = (comment: string) => {}
 
@@ -304,7 +309,7 @@ const ChallangeDetail = () => {
             vertical: 'top',
             horizontal: 'right',
           }}
-          autoHideDuration={2500}
+          autoHideDuration={1500}
           TransitionComponent={notiState.Transition}
           key={notiState.Transition.name}
         >

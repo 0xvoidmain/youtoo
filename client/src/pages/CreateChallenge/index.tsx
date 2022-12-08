@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import axios from 'axios'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
@@ -21,6 +20,7 @@ import Button from '~/components/Button'
 import TextField from '~/components/TextField'
 import configs from '~/configurations'
 import { createChallegeSchema } from '~/schema/createChallengeSchema'
+import Http from '~/utils/httpUtils'
 
 import { ICreateChallenge } from './types'
 
@@ -40,7 +40,7 @@ const CreateChallenge = () => {
       setIsLoading(true)
       const { name, description, minDepositAmount, tokenAmount, timeframe, startAt, numberOfTimeFrame } = data
 
-      await axios.post(`${configs.apiUrl}/CreateChallenge`, {
+      await Http.post(`${configs.apiUrl}/CreateChallenge`, {
         templateId: 1,
         name,
         description,
