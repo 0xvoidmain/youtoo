@@ -32,7 +32,7 @@ const CreateChallenge = () => {
   const { control, handleSubmit, formState } = useForm<ICreateChallenge>({
     resolver: yupResolver(createChallegeSchema),
     defaultValues: {
-      startAt: new Date().toISOString(),
+      startAt: new Date(),
     },
     reValidateMode: 'onChange',
   })
@@ -49,7 +49,7 @@ const CreateChallenge = () => {
         description,
         type: timeframe,
         token: 'SOL',
-        startAt,
+        startAt: startAt.getTime(),
         amount: tokenAmount,
         depositAmount: minDepositAmount,
         numberTimeframe: numberOfTimeFrame,
@@ -147,13 +147,11 @@ const CreateChallenge = () => {
             <Controller
               name="startAt"
               control={control}
-              render={({ field: { onChange, value, ...restProps } }) => (
+              render={({ field }) => (
                 <DesktopDatePicker
-                  {...restProps}
-                  value={value}
+                  {...field}
                   minDate={new Date()}
                   label="Start at"
-                  onChange={(v) => onChange(v?.getTime())}
                   renderInput={(params) => <TextField {...params} />}
                 />
               )}

@@ -5,5 +5,5 @@ export interface ICreateChallenge {
   minDepositAmount: number
   timeframe: string
   numberOfTimeFrame: string
-  startAt: string
+  startAt: Date
 }

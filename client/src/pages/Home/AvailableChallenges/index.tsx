@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fromUnixTime } from 'date-fns'
 
 import { Card, CardActions, CardContent, Typography } from '@mui/material'
 
@@ -37,43 +38,41 @@ const AvailalbeChallenges = () => {
 
   return (
     <Container isLoading={isLoading}>
-      {challenges.map(
-        ({ name, description, params, _id }) => {
-          return (
-            <Card
-              key={_id}
-              sx={{
-                backgroundColor: 'secondary.dark',
-                position: 'relative',
-                overflow: 'visible',
-                padding: (theme) => theme.spacing(1),
-                margin: (theme) => theme.spacing(0, 0, 4, 0),
-              }}
-            >
-              {/* <Ribbon type={type} /> */}
-              <CardContent>
-                <Typography gutterBottom variant="h2">
-                  {name}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} variant="subtitle1">
-                  {description}
-                </Typography>
-                <Typography variant="subtitle1">Thời gian: {params.startAt}</Typography>
-                {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
-                <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
-                {/* <Typography variant="subtitle1" fontWeight={800}>
+      {challenges.map(({ name, description, params, _id }) => {
+        return (
+          <Card
+            key={_id}
+            sx={{
+              backgroundColor: 'secondary.dark',
+              position: 'relative',
+              overflow: 'visible',
+              padding: (theme) => theme.spacing(1),
+              margin: (theme) => theme.spacing(0, 0, 4, 0),
+            }}
+          >
+            {/* <Ribbon type={type} /> */}
+            <CardContent>
+              <Typography gutterBottom variant="h2">
+                {name}
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} variant="subtitle1">
+                {description}
+              </Typography>
+              <Typography variant="subtitle1">Thời gian: {fromUnixTime(params.startAt / 1000).toString()}</Typography>
+              {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
+              <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
+              {/* <Typography variant="subtitle1" fontWeight={800}>
                   {numberOfCommittedPeople} người đăng ký tham gia
                 </Typography> */}
-              </CardContent>
-              <CardActions>
-                <Button onClick={() => onHandleNavigateToDetail(_id)} variant="contained">
-                  Details
-                </Button>
-              </CardActions>
-            </Card>
-          )
-        },
-      )}
+            </CardContent>
+            <CardActions>
+              <Button onClick={() => onHandleNavigateToDetail(_id)} variant="contained">
+                Details
+              </Button>
+            </CardActions>
+          </Card>
+        )
+      })}
     </Container>
   )
 }

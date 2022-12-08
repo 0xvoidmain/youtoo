@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import { fromUnixTime } from 'date-fns'
 import find from 'lodash/find'
 
 import { ExpandMore } from '@mui/icons-material'
@@ -103,7 +104,7 @@ const ChallangeDetail = () => {
           <Typography sx={{ mb: 1.5 }} variant="subtitle1">
             {description}
           </Typography>
-          <Typography variant="subtitle1">Thời gian: {params.startAt}</Typography>
+          <Typography variant="subtitle1">Thời gian: {fromUnixTime(params.startAt / 1000).toString()}</Typography>
           {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
           <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
           {/* <Typography variant="subtitle1" fontWeight={800}>

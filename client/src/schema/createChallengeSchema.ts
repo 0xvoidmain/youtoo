@@ -7,5 +7,5 @@ export const createChallegeSchema = yup.object({
   minDepositAmount: yup.number().required(),
   timeframe: yup.string().required(),
   numberOfTimeFrame: yup.string().required(),
-  startAt: yup.string().required(),
+  startAt: yup.date().required(),
 })
