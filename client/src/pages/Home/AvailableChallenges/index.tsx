@@ -1,30 +1,47 @@
-import React, { useCallback, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Card, CardActions, CardContent, Typography } from '@mui/material'
 
 import Button from '~/components/Button'
+import Container from '~/components/Layout/Container'
+import configs from '~/configurations'
 import { CHALLENGE_DETAIL_ROUTE } from '~/pages/ChallengeDetail'
 import { selectChallenges } from '~/state/reducers/app'
+import Http from '~/utils/httpUtils'
 
 import Ribbon from '../components/Ribbon'
+import { IChallange } from '../types'
 
 const AvailalbeChallenges = () => {
   const navigate = useNavigate()
-  const dummyChallanges = useSelector(selectChallenges)
-  const onHandleNavigateToDetail = useCallback((id: number) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [challenges, setChallenges] = useState<IChallange[]>([])
+  const onHandleNavigateToDetail = (id: string) => {
+    console.log(id, 'id ?')
     navigate(`${CHALLENGE_DETAIL_ROUTE}/${id}`)
+  }
+  useEffect(() => {
+    const fetchChallengeList = async () => {
+      try {
+        setIsLoading(true)
+        const { data } = await Http.get(`${configs.apiUrl}/Challenges`)
+        setChallenges(data)
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+    }
+    fetchChallengeList()
   }, [])
 
-  useEffect(() => {}, [])
-
   return (
-    <>
-      {dummyChallanges.map(
-        ({ title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople, id, type }) => {
+    <Container isLoading={isLoading}>
+      {challenges.map(
+        ({ name, tokenName, amount, startAt, timeframe, description, numberOfTimeFrame, depositAmount, _id }) => {
           return (
             <Card
+              key={_id}
               sx={{
                 backgroundColor: 'secondary.dark',
                 position: 'relative',
@@ -33,23 +50,23 @@ const AvailalbeChallenges = () => {
                 margin: (theme) => theme.spacing(0, 0, 4, 0),
               }}
             >
-              <Ribbon type={type} />
+              {/* <Ribbon type={type} /> */}
               <CardContent>
                 <Typography gutterBottom variant="h2">
-                  {title}
+                  {name}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} variant="subtitle1">
-                  {challangeDescription}
+                  {description}
                 </Typography>
-                <Typography variant="subtitle1">Thời gian: {time}</Typography>
-                <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography>
-                <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${minCommittedAmount}</Typography>
-                <Typography variant="subtitle1" fontWeight={800}>
+                <Typography variant="subtitle1">Thời gian: {startAt}</Typography>
+                {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
+                <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${depositAmount}</Typography>
+                {/* <Typography variant="subtitle1" fontWeight={800}>
                   {numberOfCommittedPeople} người đăng ký tham gia
-                </Typography>
+                </Typography> */}
               </CardContent>
               <CardActions>
-                <Button onClick={() => onHandleNavigateToDetail(id)} variant="contained">
+                <Button onClick={() => onHandleNavigateToDetail(_id)} variant="contained">
                   Details
                 </Button>
               </CardActions>
@@ -57,7 +74,7 @@ const AvailalbeChallenges = () => {
           )
         },
       )}
-    </>
+    </Container>
   )
 }
 

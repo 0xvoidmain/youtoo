@@ -26,7 +26,6 @@ const Home = () => {
   const { connection } = useConnection()
   const { publicKey, sendTransaction } = useWallet()
   const [value, setValue] = React.useState('1')
-
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
