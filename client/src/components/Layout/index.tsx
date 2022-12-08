@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -48,7 +48,8 @@ const settings = [
 
 const Layout = ({ children }: ILayout) => {
   const navigate = useNavigate()
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [isLoadingLogin, setIsLoadingLogin] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const { AccessToken } = useSelector(selectAuthInfo)
   const { connected, publicKey } = useWallet()
@@ -71,16 +72,22 @@ const Layout = ({ children }: ILayout) => {
   }, [])
 
   const onHandleLogin = async () => {
-    const { data: { AccessToken, AccessTokenExpireTime } = {} } = await axios.post(`${configs.apiUrl}/Auth`, {
-      address,
-      name: address,
-    })
-    dispatch(
-      setAuthInfo({
-        AccessToken,
-        AccessTokenExpireTime,
-      }),
-    )
+    try {
+      setIsLoadingLogin(true)
+      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await axios.post(`${configs.apiUrl}/Auth`, {
+        address,
+        name: address,
+      })
+      dispatch(
+        setAuthInfo({
+          AccessToken,
+          AccessTokenExpireTime,
+        }),
+      )
+      setIsLoadingLogin(false)
+    } catch (error) {
+      setIsLoadingLogin(false)
+    }
   }
   return (
     <Wrapper direction="column" justifyContent="space-between">

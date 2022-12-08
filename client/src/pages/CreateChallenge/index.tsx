@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import axios from 'axios'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import {
@@ -18,24 +19,51 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 
 import Button from '~/components/Button'
 import TextField from '~/components/TextField'
+import configs from '~/configurations'
 import { createChallegeSchema } from '~/schema/createChallengeSchema'
+
+import { ICreateChallenge } from './types'
 
 export const CREATE_CHALLENGE_ROUTE = '/create-challenge'
 const CreateChallenge = () => {
-  const { control, handleSubmit, formState } = useForm({
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { control, handleSubmit, formState } = useForm<ICreateChallenge>({
     resolver: yupResolver(createChallegeSchema),
     reValidateMode: 'onChange',
   })
 
   const { errors } = formState
-  const onSubmit = (data: any) => console.log(data)
+  console.log(errors, 'errors ?')
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      console.log(data)
+      setIsLoading(true)
+      const { name, description, minDepositAmount, tokenAmount, timeframe, startAt, numberOfTimeFrame } = data
+
+      await axios.post(`${configs.apiUrl}/CreateChallenge`, {
+        templateId: 1,
+        name,
+        description,
+        type: timeframe,
+        token: 'SOL',
+        startAt,
+        amount: tokenAmount,
+        depositAmount: minDepositAmount,
+        numberTimeframe: numberOfTimeFrame,
+      })
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error, 'FAil to create challenge')
+    }
+  })
 
   const allowOnlyNumber = (value: string) => {
     return value.replace(/[^0-9]/g, '')
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <Typography variant="h3" mb={3}>
         Create challenge
       </Typography>
@@ -101,6 +129,19 @@ const CreateChallenge = () => {
               />
             </FormControl>
             <Controller
+              name="numberOfTimeFrame"
+              control={control}
+              render={({ field: { onChange, value, ...restProps } }) => (
+                <TextField
+                  {...restProps}
+                  value={value}
+                  onChange={(e) => onChange(allowOnlyNumber(e.target.value))}
+                  variant="outlined"
+                  label="Time frame"
+                />
+              )}
+            />
+            <Controller
               name="startAt"
               control={control}
               render={({ field }) => (
@@ -115,7 +156,7 @@ const CreateChallenge = () => {
           </Stack>
         </CardContent>
         <CardActions>
-          <Button variant="contained" type="submit">
+          <Button type="submit" variant="contained" isLoading={isLoading}>
             Create
           </Button>
         </CardActions>

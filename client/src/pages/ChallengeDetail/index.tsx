@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
 import find from 'lodash/find'
 
 import { ExpandMore } from '@mui/icons-material'
@@ -27,20 +28,20 @@ import AvatarSrc from '~/assets/images/leviacker.jpg'
 import Button from '~/components/Button'
 import Container from '~/components/Layout/Container'
 import TextField from '~/components/TextField'
+import configs from '~/configurations'
 import { useAppDispatch } from '~/state'
 import { selectChallenges, setType } from '~/state/reducers/app'
-import { IChallange } from '~/state/reducers/types'
 
-import { HOME_ROUTE } from '../Home'
+// import { HOME_ROUTE } from '../Home'
 import Progress from '../Home/components/Progress'
+import { defaultIChallengeValue, IChallange } from '../Home/types'
 
 export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const dummyChallanges = useSelector(selectChallenges)
   const [isLoading, setIsLoading] = useState(true)
   const [notiState, setNotiState] = useState<{
     open: boolean
@@ -54,36 +55,34 @@ const ChallangeDetail = () => {
     Transition: Fade,
   })
   const [commentTxt, setCommentTxt] = useState<string>('')
-  const { title, time, challangeDescription, prize, minCommittedAmount, numberOfCommittedPeople, id, type } = useMemo<
-    IChallange | Record<string, any>
-  >(() => {
-    return find(dummyChallanges, (c) => c.id === Number(challengeId)) || {}
-  }, [challengeId])
-
-  const isJoinedChallenge = useMemo(() => {
-    return type === 'Joined'
-  }, [type])
+  const [challengeDetail, setChallengeDetail] = useState<IChallange>(defaultIChallengeValue)
+  const { amount, depositAmount, description, name, numberOfTimeFrame, startAt, tokenName, _id } = challengeDetail
+  // const isJoinedChallenge = useMemo(() => {
+  //   return type === 'Joined'
+  // }, [type])
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000)
+    const fetchChallengeDetail = async () => {
+      try {
+        setIsLoading(true)
+        const { data } = await axios.post(`${configs.apiUrl}/Challenge`, {
+          challengeId,
+        })
+        setChallengeDetail(data)
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+    }
+
+    fetchChallengeDetail()
   }, [])
 
-  const onHandleJoinChallange = useCallback((id: number) => {
+  const onHandleJoinChallange = useCallback((id: string) => {
     setNotiState({
       open: true,
       Transition: Fade,
     })
-    dispatch(
-      setType({
-        id,
-        type: 'Joined',
-      }),
-    )
-    setTimeout(() => {
-      navigate(HOME_ROUTE)
-    }, 1000)
   }, [])
 
   const addComment = (comment: string) => {}
@@ -106,17 +105,17 @@ const ChallangeDetail = () => {
       >
         <CardContent>
           <Typography gutterBottom variant="h2">
-            {title}
+            {name}
           </Typography>
           <Typography sx={{ mb: 1.5 }} variant="subtitle1">
-            {challangeDescription}
+            {description}
           </Typography>
-          <Typography variant="subtitle1">Thời gian: {time}</Typography>
-          <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography>
-          <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${minCommittedAmount}</Typography>
-          <Typography variant="subtitle1" fontWeight={800}>
+          <Typography variant="subtitle1">Thời gian: {startAt}</Typography>
+          {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
+          <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${depositAmount}</Typography>
+          {/* <Typography variant="subtitle1" fontWeight={800}>
             {numberOfCommittedPeople} người đăng ký tham gia
-          </Typography>
+          </Typography> */}
           <Typography variant="h6" fontWeight={800} mt={(theme) => theme.spacing(1)}>
             Progress:
           </Typography>
@@ -129,8 +128,8 @@ const ChallangeDetail = () => {
           />
         </CardContent>
       </Card>
-      <Button onClick={() => onHandleJoinChallange(id)} disabled={isJoinedChallenge} variant="contained">
-        {isJoinedChallenge ? 'Already Joined' : 'Join challange'}
+      <Button onClick={() => onHandleJoinChallange(_id)} variant="contained">
+        Join Challenge
       </Button>
       <Divider
         variant="middle"
