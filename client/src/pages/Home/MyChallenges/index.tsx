@@ -56,7 +56,7 @@ const MyChallenges = () => {
               <Typography sx={{ mb: 1.5 }} variant="subtitle1">
                 {description}
               </Typography>
-              <Typography variant="subtitle1">Thời gian: {startAt}</Typography>
+              <Typography variant="subtitle1">Thời gian: {fromUnixTime(startAt / 1000).toDateString()}</Typography>
               {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
               <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${depositAmount}</Typography>
               {/* <Typography variant="subtitle1" fontWeight={600}>

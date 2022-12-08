@@ -29,11 +29,13 @@ const CreateChallenge = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { control, handleSubmit, formState } = useForm<ICreateChallenge>({
     resolver: yupResolver(createChallegeSchema),
+    defaultValues: {
+      startAt: new Date().toISOString(),
+    },
     reValidateMode: 'onChange',
   })
 
   const { errors } = formState
-  console.log(errors, 'errors ?')
   const onSubmit = handleSubmit(async (data) => {
     try {
       console.log(data)
@@ -144,12 +146,14 @@ const CreateChallenge = () => {
             <Controller
               name="startAt"
               control={control}
-              render={({ field }) => (
+              render={({ field: { onChange, value, ...restProps } }) => (
                 <DesktopDatePicker
+                  {...restProps}
+                  value={value}
                   minDate={new Date()}
                   label="Start at"
+                  onChange={(v) => onChange(v?.getTime())}
                   renderInput={(params) => <TextField {...params} />}
-                  {...field}
                 />
               )}
             />
