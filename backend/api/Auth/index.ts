@@ -23,6 +23,8 @@ export default async (req: HTTPRequest<{ address: string, name: string}>) => {
     var AccessToken = issueToken(account._id, account.name, 1)
 
     return {
+        userId: account._id,
+        name: account.name,
         AccessToken,
         AccessTokenExpireTime: new Date().getTime() + 24 * 60 * 60 * 1000 - 60 * 1000
     }
