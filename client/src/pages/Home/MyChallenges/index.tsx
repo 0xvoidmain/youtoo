@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { fromUnixTime } from 'date-fns'
 
@@ -8,7 +7,6 @@ import { Card, CardActions, CardContent, Typography } from '@mui/material'
 import Button from '~/components/Button'
 import Container from '~/components/Layout/Container'
 import { CHALLENGE_DETAIL_ROUTE } from '~/pages/ChallengeDetail'
-import { selectChallenges } from '~/state/reducers/app'
 import Http from '~/utils/httpUtils'
 
 import Progress from '../components/Progress'
@@ -39,7 +37,7 @@ const MyChallenges = () => {
 
   return (
     <Container isLoading={isLoading}>
-      {challenges.map(({ name, _id, description, params}) => {
+      {challenges.map(({ name, _id, description, params }) => {
         return (
           <Card
             key={_id}
@@ -56,7 +54,9 @@ const MyChallenges = () => {
               <Typography sx={{ mb: 1.5 }} variant="subtitle1">
                 {description}
               </Typography>
-              <Typography variant="subtitle1">Thời gian: {params.startAt}</Typography>
+              <Typography variant="subtitle1">
+                Thời gian: {fromUnixTime(params.startAt / 1000).toDateString()}
+              </Typography>
               {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
               <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
               {/* <Typography variant="subtitle1" fontWeight={600}>
