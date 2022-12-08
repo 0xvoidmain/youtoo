@@ -19,6 +19,7 @@ export default async (req: HTTPRequest<{
         ...challenge,
         participants: 0,
         likes: 0,
-        comments: []
+        comments: [],
+        players: []
     })
 }

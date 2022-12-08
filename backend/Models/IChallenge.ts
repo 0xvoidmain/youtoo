@@ -41,9 +41,13 @@ interface IChallenge {
     description: string
     guide: {
         description: string
-        params: IChallengeParams[]
+        params: {
+            [key: string]: any
+        }
     }
-    params: IChallengeParams[]
+    params: {
+        [key: string]: any
+    }
     participants: number
     players: {
         [userId: string]: IChallengePlayer

@@ -34,7 +34,7 @@ import Http from '~/utils/httpUtils'
 
 // import { HOME_ROUTE } from '../Home'
 import Progress from '../Home/components/Progress'
-import { defaultIChallengeValue, IChallange } from '../Home/types'
+import { defaultIChallengeValue, IChallenge } from '../Home/types'
 
 export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 
@@ -53,8 +53,8 @@ const ChallangeDetail = () => {
     Transition: Fade,
   })
   const [commentTxt, setCommentTxt] = useState<string>('')
-  const [challengeDetail, setChallengeDetail] = useState<IChallange>(defaultIChallengeValue)
-  const { amount, depositAmount, description, name, numberOfTimeFrame, startAt, tokenName, _id } = challengeDetail
+  const [challengeDetail, setChallengeDetail] = useState<IChallenge>(defaultIChallengeValue)
+  const { description, name, _id, comments, params } = challengeDetail
   // const isJoinedChallenge = useMemo(() => {
   //   return type === 'Joined'
   // }, [type])
@@ -90,7 +90,14 @@ const ChallangeDetail = () => {
     }
   }
 
-  const addComment = (comment: string) => {}
+  const addComment = async (comment: string) => {
+    const { data } = await Http.post(`/CommentChallenge`, {
+      challengeId,
+      comment
+    })
+
+    setChallengeDetail(data)
+  }
 
   const handleClose = () => {
     setNotiState({
@@ -115,9 +122,9 @@ const ChallangeDetail = () => {
           <Typography sx={{ mb: 1.5 }} variant="subtitle1">
             {description}
           </Typography>
-          <Typography variant="subtitle1">Thời gian: {startAt}</Typography>
+          <Typography variant="subtitle1">Thời gian: {params.startAt}</Typography>
           {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
-          <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${depositAmount}</Typography>
+          <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
           {/* <Typography variant="subtitle1" fontWeight={800}>
             {numberOfCommittedPeople} người đăng ký tham gia
           </Typography> */}
@@ -238,70 +245,35 @@ const ChallangeDetail = () => {
             </Stack>
           </Box>
         </Paper>
-        <Paper
-          sx={{
-            backgroundColor: '#4a4953',
-            padding: (theme) => theme.spacing(2),
-            margin: (theme) => theme.spacing(4, 0, 0, 0),
-          }}
-        >
-          <Grid container wrap="nowrap" spacing={2}>
-            <Grid item>
-              <Avatar alt="Remy Sharp" src={AvatarSrc} />
+        {comments.map((e: any) => 
+          <Paper
+            sx={{
+              backgroundColor: '#4a4953',
+              padding: (theme) => theme.spacing(2),
+              margin: (theme) => theme.spacing(4, 0, 0, 0),
+            }}
+          >
+            <Grid container wrap="nowrap" spacing={2}>
+              <Grid item>
+                <Avatar alt="Remy Sharp" src={AvatarSrc} />
+              </Grid>
+              <Grid justifyContent="left" item xs zeroMinWidth>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    textAlign: 'left',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {e.name}
+                </Typography>
+                <Typography variant="body1">
+                  {e.comment}.{' '}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid justifyContent="left" item xs zeroMinWidth>
-              <Typography
-                variant="body1"
-                sx={{
-                  textAlign: 'left',
-                  fontWeight: 'bold',
-                }}
-              >
-                Michel Michel
-              </Typography>
-              <Typography variant="body1">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean luctus ut est sed faucibus. Duis
-                bibendum ac ex vehicula laoreet. Suspendisse congue vulputate lobortis. Pellentesque at interdum tortor.
-                Quisque arcu quam, malesuada vel mauris et, posuere sagittis ipsum. Aliquam ultricies a ligula nec
-                faucibus. In elit metus, efficitur lobortis nisi quis, molestie porttitor metus. Pellentesque et neque
-                risus. Aliquam vulputate, mauris vitae tincidunt interdum, mauris mi vehicula urna, nec feugiat quam
-                lectus vitae ex.{' '}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Paper>
-        <Paper
-          sx={{
-            backgroundColor: '#4a4953',
-            padding: (theme) => theme.spacing(2),
-            margin: (theme) => theme.spacing(4, 0, 0, 0),
-          }}
-        >
-          <Grid container wrap="nowrap" spacing={2}>
-            <Grid item>
-              <Avatar alt="Remy Sharp" src={AvatarSrc} />
-            </Grid>
-            <Grid justifyContent="left" item xs zeroMinWidth>
-              <Typography
-                variant="body1"
-                sx={{
-                  textAlign: 'left',
-                  fontWeight: 'bold',
-                }}
-              >
-                Michel Michel
-              </Typography>
-              <Typography variant="body1">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean luctus ut est sed faucibus. Duis
-                bibendum ac ex vehicula laoreet. Suspendisse congue vulputate lobortis. Pellentesque at interdum tortor.
-                Quisque arcu quam, malesuada vel mauris et, posuere sagittis ipsum. Aliquam ultricies a ligula nec
-                faucibus. In elit metus, efficitur lobortis nisi quis, molestie porttitor metus. Pellentesque et neque
-                risus. Aliquam vulputate, mauris vitae tincidunt interdum, mauris mi vehicula urna, nec feugiat quam
-                lectus vitae ex.{' '}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        )}
         <Snackbar
           open={notiState.open}
           onClose={handleClose}
