@@ -1,4 +1,4 @@
-import { HTTPFunction, HTTPRequest } from "../../HTTPFunction";
+import { HTTPFunction, HTTPRequest } from "../HTTPFunction";
 import { verifyToken } from "../Service/JWT"
 export interface IUserAuth {
     userId: string

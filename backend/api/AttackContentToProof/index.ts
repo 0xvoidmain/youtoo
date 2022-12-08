@@ -1,6 +1,5 @@
-import { HTTPRequest } from "../../HTTPFunction";
-import { Mongo } from "../../_core/MongoDB";
-
+import { HTTPRequest } from "../../HTTPFunction"
+import { Mongo } from "../../MongoDB"
 export default async (req: HTTPRequest<{
     challengeId: string,
     proofId: number,
@@ -17,7 +16,7 @@ export default async (req: HTTPRequest<{
             [`players.${req._auth().userId}.proofOfWorks.${req.body.proofId}`]: {
                 content: req.body.content,
                 image: req.body.image
-            } as IChallengeProof
+            }
         }
     }, {
         new: true

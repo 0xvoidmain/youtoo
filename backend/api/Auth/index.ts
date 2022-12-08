@@ -1,7 +1,7 @@
-import { issueToken } from "../../_core/Service/JWT";
+import { issueToken } from "../../Service/JWT";
 import { HTTPRequest } from "../../HTTPFunction";
-import { IAccount } from "../../_core/Models/IAccount";
-import { Mongo } from "../../_core/MongoDB";
+import { IAccount } from "../../Models/IAccount";
+import { Mongo } from "../../MongoDB";
 
 export default async (req: HTTPRequest<{ address: string, name: string}>) => {
     var { address, name } = req.body

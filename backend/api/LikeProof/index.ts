@@ -1,5 +1,5 @@
 import { HTTPRequest } from "../../HTTPFunction";
-import { Mongo } from "../../_core/MongoDB";
+import { Mongo } from "../../MongoDB";
 
 export default async (req: HTTPRequest<{
     challengeId: string,
