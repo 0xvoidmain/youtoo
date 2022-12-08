@@ -54,4 +54,5 @@ interface IChallenge {
     },
     likes: number
     comments: IComment[]
+    template: any
 }

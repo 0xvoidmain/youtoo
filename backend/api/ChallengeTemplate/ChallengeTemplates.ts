@@ -59,8 +59,8 @@ const ChallengeTemplates = [{
             depositAmount: 10,
         })
         return {
-            name: `Mua ${params.amount} ${params.token} ${tf(params.timeframe)}`,
-            description: `Mua ${params.amount} ${params.token} ${tf(params.timeframe)} để trở thành tỷ phú sau 2 năm nữa các bạn ơi. \nViệc mua hàng ngày sẽ giúp bạn trung bình giá tốt trong dài hạn. Đây là một chiến lược đầu tư đơn giản nhưng hiệu quả.`,
+            name: params.name || `Mua ${params.amount} ${params.token} ${tf(params.timeframe)}`,
+            description: params.description || `Mua ${params.amount} ${params.token} ${tf(params.timeframe)} để trở thành tỷ phú sau 2 năm nữa các bạn ơi. \nViệc mua hàng ngày sẽ giúp bạn trung bình giá tốt trong dài hạn. Đây là một chiến lược đầu tư đơn giản nhưng hiệu quả.`,
             guide: {
                 description: `Người chơi cần kết nối với binance exchange thông qua API để hệ thống có thể kiểm tra quá trình thực hiện thử thách của bạn`,
                 params: [{
@@ -111,8 +111,8 @@ const ChallengeTemplates = [{
             depositAmount: 10,
         })
         return {
-            name: `Chống đẩy ${params.amount} lần liên tục ${tf(params.timeframe)}`,
-            description: `Chống đẩy mỗi ngày sẽ giúp ngực bạn đẹp hơn. Đơn giản hiệu quả, không tốn tiền`,
+            name: params.name || `Chống đẩy ${params.amount} lần liên tục ${tf(params.timeframe)}`,
+            description: params.description || `Chống đẩy mỗi ngày sẽ giúp ngực bạn đẹp hơn. Đơn giản hiệu quả, không tốn tiền`,
             guide: {
                 description: `Người chơi cần bật camera để quay lại quá trình luyện tập, video sẽ được upload lên server để hệ thống kiểm tra và đánh giá`,
                 params: []
@@ -158,8 +158,8 @@ const ChallengeTemplates = [{
             depositAmount: 10,
         })
         return {
-            name: `Chạy ${params.amount} km ${tf(params.timeframe)}`,
-            description: `Chạy bộ giúp bạn giảm cân và hệ tim mạch tốt hơn. Tham gia cùng chúng mình nhé.`,
+            name: params.name || `Chạy ${params.amount} km ${tf(params.timeframe)}`,
+            description: params.description || `Chạy bộ giúp bạn giảm cân và hệ tim mạch tốt hơn. Tham gia cùng chúng mình nhé.`,
             guide: {
                 description: `Người tham gia cần bật GPS để ứng dụng lưu lại quãng đường di chuyển của bạn, hoặc nhập strava api để hệ thống kiểm tra quá trình thực hiện`,
                 params: []
