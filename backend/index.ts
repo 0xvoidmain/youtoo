@@ -42,10 +42,7 @@ function HTTPTrigger(name: string, execueFunction: HTTPFunction) {
 
             var result = await execueFunction(req)
 
-            Object.keys(result.headers || {}).forEach(k => {
-                res.setHeader(k, result.headers[k])
-            })
-            res.status(result.status || 200).send(result)
+            res.status(200).send(result)
         }
         catch (ex) {
             console.error(ex)

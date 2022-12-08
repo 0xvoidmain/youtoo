@@ -9,7 +9,7 @@ export default async (req: HTTPRequest<{
     
     return await Mongo<IChallenge>('Challenge').findOneAndUpdate({
         _id: req.body.challengeId,
-        [`player.${req._auth().userId}`]: {
+        [`players.${req._auth().userId}`]: {
             $exists: false
         }
     }, {
