@@ -2,7 +2,9 @@ import { HTTPRequest } from "../../HTTPFunction";
 import { Mongo } from "../../_core/MongoDB";
 import ChallengeTemplates from "../ChallengeTemplate/ChallengeTemplates";
 
-export default async (req: HTTPRequest) => {
+export default async (req: HTTPRequest<{
+    templateId: number
+}>) => {
     var {
         templateId,
         ...params
@@ -12,8 +14,11 @@ export default async (req: HTTPRequest) => {
 
     var challenge = template.create(params)
 
-    return await Mongo('Challenge').create({
+    return await Mongo<IChallenge>('Challenge').create({
+        creator: req._auth().userId,
         ...challenge,
-        creator: req._auth().userId
+        participants: 0,
+        likes: 0,
+        comments: []
     })
 }

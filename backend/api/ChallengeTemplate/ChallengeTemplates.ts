@@ -65,10 +65,12 @@ const ChallengeTemplates = [{
                 description: `Người chơi cần kết nối với binance exchange thông qua API để hệ thống có thể kiểm tra quá trình thực hiện thử thách của bạn`,
                 params: [{
                     key: 'BinanceAPI',
+                    name: 'BianaceAPI',
+                    description: 'Vui lòng thêm BinanceAPI để có thể kiểm tra thử thách của bạn',
                     type: 'string'
                 }]
             },
-            ...params,
+            params,
         }
     }
 }, {
@@ -113,8 +115,9 @@ const ChallengeTemplates = [{
             description: `Chống đẩy mỗi ngày sẽ giúp ngực bạn đẹp hơn. Đơn giản hiệu quả, không tốn tiền`,
             guide: {
                 description: `Người chơi cần bật camera để quay lại quá trình luyện tập, video sẽ được upload lên server để hệ thống kiểm tra và đánh giá`,
+                params: []
             },
-            ...params,
+            params,
         }
     }
 }, {
@@ -159,8 +162,9 @@ const ChallengeTemplates = [{
             description: `Chạy bộ giúp bạn giảm cân và hệ tim mạch tốt hơn. Tham gia cùng chúng mình nhé.`,
             guide: {
                 description: `Người tham gia cần bật GPS để ứng dụng lưu lại quãng đường di chuyển của bạn, hoặc nhập strava api để hệ thống kiểm tra quá trình thực hiện`,
+                params: []
             },
-            ...params,
+            params,
         }
     }
 }]

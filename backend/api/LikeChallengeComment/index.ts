@@ -2,19 +2,17 @@ import { HTTPRequest } from "../../HTTPFunction";
 import { Mongo } from "../../_core/MongoDB";
 
 export default async (req: HTTPRequest<{
-    challengeId: string,
-    comment: string
+    challengeId: string
+    commentId: number
 }>) => {
     return await Mongo<IChallenge>('Challenge').findOneAndUpdate({
         _id: req.body.challengeId,
+        [`comments.${req.body.commentId}`]: {
+            $exists: true
+        }
     }, {
-        $push: {
-            comments: {
-                userId: req._auth().userId,
-                name: req._auth().name,
-                comment: req.body.comment,
-                likes: 0
-            } as IComment
+        $inc: {
+            [`comments.${req.body.commentId}.likes`]: 1
         }
     }, {
         new: true

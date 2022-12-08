@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { Mongo } from "../../MongoDB"
 
 enum IAccountRole {
     User = 'User',

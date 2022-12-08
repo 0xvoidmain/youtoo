@@ -4,7 +4,13 @@ import { Mongo } from "../../_core/MongoDB";
 export default async (req: HTTPRequest<{
     challengeId: string
 }>) => {
-    return await Mongo<IChallenge>('Challenge').findById({
+    return await Mongo<IChallenge>('Challenge').findOneAndUpdate({
         _id: req.body.challengeId
+    }, {
+        $inc: {
+            "likes": 1
+        }
+    }, {
+        new: true
     })
 }
