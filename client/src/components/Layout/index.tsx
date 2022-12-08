@@ -71,14 +71,17 @@ const Layout = ({ children }: ILayout) => {
     if (publicKey) return publicKey?.toBase58()
 
     return null
-  }, [])
+  }, [publicKey])
 
   const onHandleLogin = async () => {
     try {
+      const name = prompt("Enter your name please")
+      if (!name) return
       setIsLoadingLogin(true)
+      
       const { data: { AccessToken, AccessTokenExpireTime } = {} } = await Http.post(`/Auth`, {
         address,
-        name: address,
+        name,
       })
       setToLocalStorage<IAuth>(AUTH_TOKEN, {
         AccessToken,
