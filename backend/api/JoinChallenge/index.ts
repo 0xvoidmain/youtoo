@@ -1,9 +1,12 @@
 import { HTTPRequest } from "../../HTTPFunction";
 import { Mongo } from "../../_core/MongoDB";
+import LikeChallenge from "../LikeChallenge";
 
 export default async (req: HTTPRequest<{
     challengeId: string
 }>) => {
+    await LikeChallenge(req)
+    
     return await Mongo<IChallenge>('Challenge').findOneAndUpdate({
         _id: req.body.challengeId,
         [`player.${req._auth().userId}`]: {
