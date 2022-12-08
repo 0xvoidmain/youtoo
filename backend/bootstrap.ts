@@ -1,4 +1,4 @@
-import { MongoDBConnect } from "./_core/MongoDB";
+import { MongoDBConnect } from "./MongoDB";
 
 export async function bootstrap() {
     MongoDBConnect()

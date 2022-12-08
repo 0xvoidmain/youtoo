@@ -1,5 +1,5 @@
 import { HTTPRequest } from "../../HTTPFunction";
-import { Mongo } from "../../_core/MongoDB";
+import { Mongo } from "../../MongoDB";
 import ChallengeTemplates from "../ChallengeTemplate/ChallengeTemplates";
 
 export default async (req: HTTPRequest<{
@@ -19,6 +19,7 @@ export default async (req: HTTPRequest<{
         ...challenge,
         participants: 0,
         likes: 0,
-        comments: []
+        comments: [],
+        players: []
     })
 }

@@ -11,12 +11,12 @@ import { selectChallenges } from '~/state/reducers/app'
 import Http from '~/utils/httpUtils'
 
 import Ribbon from '../components/Ribbon'
-import { IChallange } from '../types'
+import { IChallenge } from '../types'
 
 const AvailalbeChallenges = () => {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [challenges, setChallenges] = useState<IChallange[]>([])
+  const [challenges, setChallenges] = useState<IChallenge[]>([])
   const onHandleNavigateToDetail = (id: string) => {
     console.log(id, 'id ?')
     navigate(`${CHALLENGE_DETAIL_ROUTE}/${id}`)
@@ -38,7 +38,7 @@ const AvailalbeChallenges = () => {
   return (
     <Container isLoading={isLoading}>
       {challenges.map(
-        ({ name, tokenName, amount, startAt, timeframe, description, numberOfTimeFrame, depositAmount, _id }) => {
+        ({ name, description, params, _id }) => {
           return (
             <Card
               key={_id}
@@ -58,9 +58,9 @@ const AvailalbeChallenges = () => {
                 <Typography sx={{ mb: 1.5 }} variant="subtitle1">
                   {description}
                 </Typography>
-                <Typography variant="subtitle1">Thời gian: {startAt}</Typography>
+                <Typography variant="subtitle1">Thời gian: {params.startAt}</Typography>
                 {/* <Typography variant="subtitle1">Quỹ thưởng: ${prize}</Typography> */}
-                <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${depositAmount}</Typography>
+                <Typography variant="subtitle1">Số tiền cam kết tối thiểu: ${params.depositAmount}</Typography>
                 {/* <Typography variant="subtitle1" fontWeight={800}>
                   {numberOfCommittedPeople} người đăng ký tham gia
                 </Typography> */}

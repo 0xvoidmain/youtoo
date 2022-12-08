@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "start": "TS_NODE=true ts-node -T ./index.ts",
-    "dev": "ts-node-dev ./index.ts"
+    "dev": "ts-node-dev -T ./index.ts"
   },
   "dependencies": {
     "axios": "^0.26.1",

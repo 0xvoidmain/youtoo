@@ -4,13 +4,13 @@ import express from 'express'
 import cors from 'cors'
 import { randomBytes } from 'crypto'
 import compression from 'compression'
-import { MongoDBConnect } from './_core/MongoDB'
-import config from './_core/config'
+import { MongoDBConnect } from './MongoDB'
+import config from './config'
 import cronparser from 'cron-parser'
 import { CronJob } from "cron"
 import { bootstrap } from './bootstrap'
 import { HTTPFunction } from './HTTPFunction'
-import { Auth } from './_core/Middleware/Auth'
+import { Auth } from './Middleware/Auth'
 
 
 var v = JSON.parse(fs.readFileSync(path.join(__dirname, './local.settings.json'), 'utf8'))
