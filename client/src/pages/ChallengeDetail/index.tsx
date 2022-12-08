@@ -28,6 +28,7 @@ import Button from '~/components/Button'
 import Container from '~/components/Layout/Container'
 import TextField from '~/components/TextField'
 import configs from '~/configurations'
+import useAlert from '~/Context/useAlert'
 import { useAppDispatch } from '~/state'
 import { selectChallenges, setType } from '~/state/reducers/app'
 import Http from '~/utils/httpUtils'
@@ -41,17 +42,7 @@ export const CHALLENGE_DETAIL_ROUTE = '/challenge'
 const ChallangeDetail = () => {
   const { challengeId } = useParams()
   const [isLoading, setIsLoading] = useState(true)
-  const [notiState, setNotiState] = useState<{
-    open: boolean
-    Transition: React.ComponentType<
-      TransitionProps & {
-        children: React.ReactElement<any, any>
-      }
-    >
-  }>({
-    open: false,
-    Transition: Fade,
-  })
+  const { onOpenAlert } = useAlert()
   const [commentTxt, setCommentTxt] = useState<string>('')
   const [challengeDetail, setChallengeDetail] = useState<IChallenge>(defaultIChallengeValue)
   const { description, name, _id, comments, params } = challengeDetail
@@ -81,10 +72,7 @@ const ChallangeDetail = () => {
       await Http.post(`/JoinChallenge`, {
         challengeId: id,
       })
-      setNotiState({
-        open: true,
-        Transition: Fade,
-      })
+      onOpenAlert('success', 'Successfully join')
     } catch (error) {
       console.log(error, 'error')
     }
@@ -93,17 +81,10 @@ const ChallangeDetail = () => {
   const addComment = async (comment: string) => {
     const { data } = await Http.post(`/CommentChallenge`, {
       challengeId,
-      comment
+      comment,
     })
 
     setChallengeDetail(data)
-  }
-
-  const handleClose = () => {
-    setNotiState({
-      ...notiState,
-      open: false,
-    })
   }
 
   return (
@@ -245,7 +226,7 @@ const ChallangeDetail = () => {
             </Stack>
           </Box>
         </Paper>
-        {comments.map((e: any) => 
+        {comments.map((e: any) => (
           <Paper
             sx={{
               backgroundColor: '#4a4953',
@@ -267,35 +248,11 @@ const ChallangeDetail = () => {
                 >
                   {e.name}
                 </Typography>
-                <Typography variant="body1">
-                  {e.comment}.{' '}
-                </Typography>
+                <Typography variant="body1">{e.comment}. </Typography>
               </Grid>
             </Grid>
           </Paper>
-        )}
-        <Snackbar
-          open={notiState.open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          autoHideDuration={1500}
-          TransitionComponent={notiState.Transition}
-          key={notiState.Transition.name}
-        >
-          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                color: 'black',
-              }}
-              variant="caption"
-            >
-              Successfully join the challenge
-            </Typography>
-          </Alert>
-        </Snackbar>
+        ))}
       </>
     </Container>
   )

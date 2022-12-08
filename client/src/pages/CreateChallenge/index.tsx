@@ -19,6 +19,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
 import Button from '~/components/Button'
 import TextField from '~/components/TextField'
 import configs from '~/configurations'
+import useAlert from '~/Context/useAlert'
 import { createChallegeSchema } from '~/schema/createChallengeSchema'
 import Http from '~/utils/httpUtils'
 
@@ -27,6 +28,7 @@ import { ICreateChallenge } from './types'
 export const CREATE_CHALLENGE_ROUTE = '/create-challenge'
 const CreateChallenge = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { onOpenAlert } = useAlert()
   const { control, handleSubmit, formState } = useForm<ICreateChallenge>({
     resolver: yupResolver(createChallegeSchema),
     defaultValues: {
@@ -38,7 +40,6 @@ const CreateChallenge = () => {
   const { errors } = formState
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log(data)
       setIsLoading(true)
       const { name, description, minDepositAmount, tokenAmount, timeframe, startAt, numberOfTimeFrame } = data
 
@@ -54,9 +55,9 @@ const CreateChallenge = () => {
         numberTimeframe: numberOfTimeFrame,
       })
       setIsLoading(false)
+      onOpenAlert('success', 'Successfully created challenge')
     } catch (error) {
       setIsLoading(false)
-      console.log(error, 'FAil to create challenge')
     }
   })
 

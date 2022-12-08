@@ -13,6 +13,7 @@ import { Coin98WalletAdapter, PhantomWalletAdapter } from '@solana/wallet-adapte
 import config from '~/configurations'
 import { store } from '~/state'
 
+import { AlertContextProvider } from './Context/AlertContext'
 import theme from './theme/theme'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -29,7 +30,9 @@ root.render(
             <ConnectionProvider endpoint={config.rpcEndpoint}>
               <WalletProvider wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]} autoConnect>
                 <WalletDialogProvider>
-                  <App />
+                  <AlertContextProvider>
+                    <App />
+                  </AlertContextProvider>
                 </WalletDialogProvider>
               </WalletProvider>
             </ConnectionProvider>
