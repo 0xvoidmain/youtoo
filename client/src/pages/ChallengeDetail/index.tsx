@@ -245,7 +245,7 @@ const ChallangeDetail = () => {
             </Stack>
           </Box>
         </Paper>
-        {comments.map((e: any) => 
+        {comments.reverse().map((e: any) => 
           <Paper
             sx={{
               backgroundColor: '#4a4953',
