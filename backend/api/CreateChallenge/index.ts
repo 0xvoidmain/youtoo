@@ -20,6 +20,7 @@ export default async (req: HTTPRequest<{
         participants: 0,
         likes: 0,
         comments: [],
-        players: []
+        players: [],
+        template
     })
 }
