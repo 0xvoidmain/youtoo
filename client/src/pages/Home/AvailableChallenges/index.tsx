@@ -25,7 +25,7 @@ const AvailalbeChallenges = () => {
     const fetchChallengeList = async () => {
       try {
         setIsLoading(true)
-        const { data } = await Http.get(`${configs.apiUrl}/Challenges`)
+        const { data } = await Http.get(`/Challenges`)
         setChallenges(data)
         setIsLoading(false)
       } catch (error) {

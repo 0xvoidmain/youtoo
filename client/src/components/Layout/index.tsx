@@ -76,7 +76,7 @@ const Layout = ({ children }: ILayout) => {
   const onHandleLogin = async () => {
     try {
       setIsLoadingLogin(true)
-      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await Http.post(`${configs.apiUrl}/Auth`, {
+      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await Http.post(`/Auth`, {
         address,
         name: address,
       })

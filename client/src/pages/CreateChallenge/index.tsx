@@ -40,7 +40,7 @@ const CreateChallenge = () => {
       setIsLoading(true)
       const { name, description, minDepositAmount, tokenAmount, timeframe, startAt, numberOfTimeFrame } = data
 
-      await Http.post(`${configs.apiUrl}/CreateChallenge`, {
+      await Http.post(`/CreateChallenge`, {
         templateId: 1,
         name,
         description,

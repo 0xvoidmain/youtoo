@@ -63,7 +63,7 @@ const ChallangeDetail = () => {
     const fetchChallengeDetail = async () => {
       try {
         setIsLoading(true)
-        const { data } = await Http.post(`${configs.apiUrl}/Challenge`, {
+        const { data } = await Http.post(`/Challenge`, {
           challengeId,
         })
         setChallengeDetail(data)
@@ -78,7 +78,7 @@ const ChallangeDetail = () => {
 
   const onHandleJoinChallange = async (id: string) => {
     try {
-      await Http.post(`${configs.apiUrl}/JoinChallenge`, {
+      await Http.post(`/JoinChallenge`, {
         challengeId: id,
       })
       setNotiState({
