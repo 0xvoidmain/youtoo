@@ -9,7 +9,7 @@ export default async (req: HTTPRequest<{ address: string, name: string}>) => {
     var account = await await Mongo<IAccount>('Account').findOneAndUpdate({
         address: address
     }, {
-        $setOnInsert: {
+        $set: {
             address,
             name
         }
@@ -18,7 +18,9 @@ export default async (req: HTTPRequest<{ address: string, name: string}>) => {
         new: true
     })
 
-    var AccessToken = issueToken(account._id, name, 1)
+    console.log(account)
+
+    var AccessToken = issueToken(account._id, account.name, 1)
 
     return {
         AccessToken,

@@ -16,7 +16,7 @@ import { useAppDispatch } from '~/state'
 import { selectAuthInfo, setAuthInfo } from '~/state/reducers/app'
 import { IAuth } from '~/state/reducers/types'
 import Http from '~/utils/httpUtils'
-import { AUTH_TOKEN, setToLocalStorage } from '~/utils/localStorage'
+import { AUTH_TOKEN, getFromLocalStorage, removeFromLocalStorage, setToLocalStorage } from '~/utils/localStorage'
 
 const StyledButton = styled(Button)(({ theme }) => ({
   color: theme.palette.common.white,
@@ -53,7 +53,7 @@ const Layout = ({ children }: ILayout) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
   const [isLoadingLogin, setIsLoadingLogin] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const { AccessToken } = useSelector(selectAuthInfo)
+  const { AccessToken } = getFromLocalStorage<IAuth>(AUTH_TOKEN) || {}
   const { connected, publicKey } = useWallet()
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -75,17 +75,33 @@ const Layout = ({ children }: ILayout) => {
 
   const onHandleLogin = async () => {
     try {
-      const name = prompt("Enter your name please")
-      if (!name) return
+      if (AccessToken) {
+        removeFromLocalStorage(AUTH_TOKEN)
+        location.reload()
+        return 
+      }
       setIsLoadingLogin(true)
+
+      const { data: nameOfAddress = {} } = await Http.post(`/GetNameOfAddress`, {
+        address
+      })
+
+      let name: any = ''
+      if (!nameOfAddress) {
+        name = prompt("Enter your name please")
+        if (!name) {
+          setIsLoadingLogin(false)
+          return
+        }
+      }
       
-      const { data: { AccessToken, AccessTokenExpireTime } = {} } = await Http.post(`/Auth`, {
+      const { data = {} } = await Http.post(`/Auth`, {
         address,
         name,
       })
       setToLocalStorage<IAuth>(AUTH_TOKEN, {
-        AccessToken,
-        AccessTokenExpireTime,
+        AccessToken: data.AccessToken,
+        AccessTokenExpireTime: data.AccessTokenExpireTime,
       })
       setIsLoadingLogin(false)
     } catch (error) {
@@ -162,7 +178,7 @@ const Layout = ({ children }: ILayout) => {
               </Box>
 
               <WalletMultiButton />
-              {!AccessToken && (
+              {
                 <Button
                   onClick={onHandleLogin}
                   variant="contained"
@@ -170,9 +186,9 @@ const Layout = ({ children }: ILayout) => {
                     marginLeft: (theme) => theme.spacing(2),
                   }}
                 >
-                  Log in
+                  {AccessToken ? 'Logout' : 'Login'}
                 </Button>
-              )}
+              }
             </Box>
           </Grid>
         </Grid>
